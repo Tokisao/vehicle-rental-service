@@ -2,8 +2,12 @@ package com.rental;
 
 import com.rental.factory.VehicleFactory;
 import com.rental.model.Vehicle;
+import com.rental.model.Customer;
+import com.rental.model.RentalAgreement;
 import com.rental.strategy.*;
-
+import com.rental.builder.RentalAgreementBuilder;
+import com.rental.observer.AvailabilitySubject;
+import com.rental.observer.CustomerNotifier;
 public class Main {
     public static void main(String[] args) {
         //factory
@@ -26,5 +30,32 @@ public class Main {
         System.out.println(hourly.getStrategyName() + ": $" + hourly.calculatePrice(car, 30));
         System.out.println(daily.getStrategyName() + ": $" + daily.calculatePrice(car, 30));
         System.out.println(weekend.getStrategyName() + ": $" + weekend.calculatePrice(car, 30));
+
+        //Observer
+        System.out.println("\n==========================================");
+        System.out.println("Testing Observer & Builder:");
+
+        AvailabilitySubject subject = new AvailabilitySubject();
+        subject.attach(new CustomerNotifier());
+
+        Customer alice = new Customer("Alice");
+
+        System.out.println("\n--- Creating Rental Agreement ---");
+        RentalAgreement agreement = new RentalAgreementBuilder()
+                .setCustomer(alice)
+                .setVehicle(car)
+                .setHours(30)
+                .setStrategy(new HourlyPricing())
+                .addExtra("GPS")
+                .addExtra("Child Seat")
+                .build();
+
+        System.out.println(agreement);
+
+        System.out.println("\n--- Vehicle Rented ---");
+        subject.notifyObservers(car, false);
+
+        System.out.println("\n--- Vehicle Returned ---");
+        subject.notifyObservers(car, true);
     }
 }
