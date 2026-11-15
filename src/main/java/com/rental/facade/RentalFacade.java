@@ -10,18 +10,18 @@ public class RentalFacade {
     private final AvailabilitySubject availabilitySubject = new AvailabilitySubject();
 
     public RentalFacade() {
-        // Подключаем наблюдателя (уведомления) внутри фасада
+        // Attach the observer (notifications) inside the facade
         availabilitySubject.attach(new CustomerNotifier());
     }
 
-    // 1. Подобрать авто
+    // 1. Find a vehicle
     public Vehicle findVehicle(String type, String id) {
         Vehicle vehicle = VehicleFactory.createVehicle(type, id);
         System.out.println("[Facade] Found vehicle: " + vehicle.getType() + " (" + id + ")");
         return vehicle;
     }
 
-    // 2. Оформить аренду
+    // 2. Create a rental agreement
     public RentalAgreement createAgreement(Customer customer, Vehicle vehicle, int hours, String pricingType, String... extras) {
         PricingStrategy strategy;
         switch (pricingType.toLowerCase()) {
@@ -42,23 +42,23 @@ public class RentalFacade {
         }
 
         RentalAgreement agreement = builder.build();
-        System.out.println("[Facade] Agreement created. Total: $" + agreement.getTotalCost()); // если добавите геттер
+        System.out.println("[Facade] Agreement created. Total: $" + agreement.getTotalCost()); // if you add a getter
         return agreement;
     }
 
-    // 3. Оплатить (и запустить процесс аренды)
+    // 3. Pay (and start the rental process)
     public void payAndRent(RentalAgreement agreement) {
-        // Логика оплаты (заглушка)
+        // Payment logic (stub)
         System.out.println("[Facade] Payment processed for " + agreement.getCustomer().getName());
         
-        // Меняем статус машины и уведомляем наблюдателей
+        // Change the vehicle status and notify observers
         agreement.getVehicle().setAvailable(false);
         availabilitySubject.notifyObservers(agreement.getVehicle(), false);
         
         System.out.println("[Facade] Vehicle successfully rented!");
     }
     
-    // Метод для возврата (для полноты)
+    // Method for returning a vehicle (for completeness)
     public void returnVehicle(RentalAgreement agreement) {
         agreement.getVehicle().setAvailable(true);
         availabilitySubject.notifyObservers(agreement.getVehicle(), true);
