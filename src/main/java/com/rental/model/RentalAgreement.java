@@ -15,6 +15,26 @@ public class RentalAgreement {
         this.totalCost = totalCost;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public String getExtras() {
+        return extras;
+    }
+
+    public double getTotalCost() {
+        return totalCost;
+    }
+
     @Override
     public String toString() {
         return "Agreement: " + customer.getName() +

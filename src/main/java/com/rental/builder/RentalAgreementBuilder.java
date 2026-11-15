@@ -1,8 +1,9 @@
 package com.rental.builder;
 
+import com.rental.decorator.*;
 import com.rental.model.Customer;
-import com.rental.model.Vehicle;
 import com.rental.model.RentalAgreement;
+import com.rental.model.Vehicle;
 import com.rental.strategy.PricingStrategy;
 
 public class RentalAgreementBuilder {
@@ -10,7 +11,7 @@ public class RentalAgreementBuilder {
     private Vehicle vehicle;
     private int hours;
     private PricingStrategy strategy;
-    private String extras = "";
+    private RentalService rentalService; 
 
     public RentalAgreementBuilder setCustomer(Customer customer) {
         this.customer = customer;
@@ -33,7 +34,20 @@ public class RentalAgreementBuilder {
     }
 
     public RentalAgreementBuilder addExtra(String extra) {
-        this.extras += extra + " ";
+        if (this.rentalService == null) {
+            this.rentalService = new BaseRental(this.vehicle, this.hours, this.strategy);
+        }
+        switch (extra) {
+            case "GPS": 
+                this.rentalService = new GPSDecorator(this.rentalService); 
+                break;
+            case "Child Seat": 
+                this.rentalService = new ChildSeatDecorator(this.rentalService); 
+                break;
+            case "Full Insurance": 
+                this.rentalService = new FullInsuranceDecorator(this.rentalService); 
+                break;
+        }
         return this;
     }
 
@@ -41,7 +55,13 @@ public class RentalAgreementBuilder {
         if (customer == null || vehicle == null || strategy == null || hours <= 0) {
             throw new IllegalStateException("Missing required fields for RentalAgreement");
         }
-        double totalCost = strategy.calculatePrice(vehicle, hours);
-        return new RentalAgreement(customer, vehicle, hours, extras, totalCost);
+        if (rentalService == null) {
+            rentalService = new BaseRental(vehicle, hours, strategy);
+        }
+
+        double totalCost = rentalService.getCost();
+        String extrasDescription = rentalService.getDescription();
+
+        return new RentalAgreement(customer, vehicle, hours, extrasDescription, totalCost);
     }
 }
