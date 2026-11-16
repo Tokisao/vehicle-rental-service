@@ -6,7 +6,6 @@
 ---
 
 ## About the Project
-
 A console-based **Vehicle Rental Service** that demonstrates how **six distinct GoF design patterns** can be integrated into a single, cohesive application. 
 Rather than presenting isolated pattern demos, the system shows the patterns *collaborating*: a rental request flows through the Factory (object creation), 
 the Strategy (pricing), the Builder (agreement assembly), the Decorator (add-on services), the Observer (notifications), and is finally exposed to the client through the Facade.
@@ -29,6 +28,7 @@ The domain chosen is deliberately simple — renting a car, bike, or electric sc
 ---
 
 ## Project Structure
+```text
 vehicle-rental-service/
 ├── README.md
 ├── docs/
@@ -77,6 +77,7 @@ vehicle-rental-service/
 │
 └── facade/
 └── RentalFacade.java
+```
 
 ---
 
@@ -118,17 +119,17 @@ vehicle-rental-service/
 ---
 
 ## How to Run
-**Prerequisites:** JDK 17 or newer.
+**Prerequisites:** JDK 17 or newer.   
 ### macOS / Linux
-```bash
+```
 git clone https://github.com/Tokisao/vehicle-rental-service.git
 cd vehicle-rental-service
 javac -d out $(find src -name "*.java")
 java -cp out com.rental.RentalApp
 ```
 
-### Windows
-```bat
+### Windows:
+```
 git clone https://github.com/Tokisao/vehicle-rental-service.git
 cd vehicle-rental-service
 javac -d out src\com\rental\**\*.java
@@ -137,7 +138,7 @@ java -cp out com.rental.RentalApp
 
 ### Expected Output (App Launch)
 When you run the application, you will see the interactive console menu:
-```text
+```
 ============================================
    WELCOME TO THE VEHICLE RENTAL SYSTEM
 ============================================
@@ -159,7 +160,7 @@ Choose an option: 1
 ```
 
 When you create a rental with extras, the console displays the Builder output, the Facade payment step, and the Observer notification:
-```text
+```
 [Facade] Found vehicle: Car (CAR-001)
 [Facade] Agreement created. Total: $125.00
 
@@ -178,14 +179,14 @@ Pay and rent now? (y/n): y
 The project includes a self-contained test suite (`TestRunner.java`) that requires no external libraries or build tools — only the JDK. It covers all six design patterns and their integration.
 
 ### Running Tests
-No external dependencies required — just JDK 17+.
-**macOS / Linux:**
+No external dependencies required — just JDK 17+.   
+### macOS / Linux:
 ```
 javac -d out $(find src -name "*.java")
 java -cp out com.rental.TestRunner
 ```
 
-**Windows:**
+### Windows:
 ```
 javac -d out src\com\rental\**\*.java src\com\rental\TestRunner.java
 java -cp out com.rental.TestRunner\
@@ -201,7 +202,7 @@ java -cp out com.rental.TestRunner\
 - **Integration** — one end-to-end test confirms that Factory → Builder → Strategy → Decorator → Observer → Facade work together in a single rental flow.
 
 ### Expected Output
-```text
+```
 ========================================
   Vehicle Rental Service — Test Runner
 ========================================
