@@ -175,18 +175,21 @@ Pay and rent now? (y/n): y
 ---
 
 ## Testing
-The project includes a self-contained test suite (`TestRunner.java`) that requires no external libraries or build tools — only the JDK. 
-It covers all six design patterns and their integration.
+The project includes a self-contained test suite (`TestRunner.java`) that requires no external libraries or build tools — only the JDK. It covers all six design patterns and their integration.
 
 ### Running Tests
 No external dependencies required — just JDK 17+.
 **macOS / Linux:**
+```
 javac -d out $(find src -name "*.java")
 java -cp out com.rental.TestRunner
+```
 
-On Windows (Command Prompt / Batch):
+**Windows:**
+```
 javac -d out src\com\rental\**\*.java src\com\rental\TestRunner.java
-java -cp out com.rental.TestRunner
+java -cp out com.rental.TestRunner\
+```
 
 ### Test Coverage
 - **Factory** — verifies correct vehicle type creation, case-insensitive input, and `IllegalArgumentException` on unknown types.
@@ -198,6 +201,7 @@ java -cp out com.rental.TestRunner
 - **Integration** — one end-to-end test confirms that Factory → Builder → Strategy → Decorator → Observer → Facade work together in a single rental flow.
 
 ### Expected Output
+```text
 ========================================
   Vehicle Rental Service — Test Runner
 ========================================
@@ -252,3 +256,4 @@ java -cp out com.rental.TestRunner
 ========================================
   32 passed, 0 failed
 ========================================
+```
