@@ -28,7 +28,7 @@ The domain chosen is deliberately simple — renting a car, bike, or electric sc
 ---
 
 ## Project Structure
-```
+```text
 vehicle-rental-service/
 ├── README.md
 ├── docs/
