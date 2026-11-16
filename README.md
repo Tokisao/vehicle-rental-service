@@ -28,7 +28,9 @@ We chose a vehicle rental service (cars, bikes, scooters) because it’s simple 
 ## Project Structure
 ```
 vehicle-rental-service/
+│
 ├── README.md
+│
 ├── docs/
 │   ├── Final-Project-Report.pdf
 │   └── uml/
@@ -36,45 +38,48 @@ vehicle-rental-service/
 │       ├── builder-observer.png
 │       ├── decorator-facade.png
 │       └── overall-architecture.png
+│
 └── src/
-    └── com/rental/
-        ├── RentalApp.java
-        │
-        ├── model/
-        │   ├── Vehicle.java
-        │   ├── Car.java
-        │   ├── Bike.java
-        │   ├── ElectricScooter.java
-        │   ├── Customer.java
-        │   └── RentalAgreement.java
-        │
-        ├── factory/
-        │   └── VehicleFactory.java
-        │
-        ├── strategy/
-        │   ├── PricingStrategy.java
-        │   ├── HourlyPricing.java
-        │   ├── DailyPricing.java
-        │   └── WeekendPricing.java
-        │
-        ├── builder/
-        │   └── RentalAgreementBuilder.java
-        │
-        ├── observer/
-        │   ├── AvailabilityObserver.java
-        │   ├── AvailabilitySubject.java
-        │   └── CustomerNotifier.java
-        │
-        ├── decorator/
-        │   ├── RentalService.java
-        │   ├── RentalDecorator.java
-        │   ├── BaseRental.java
-        │   ├── GPSDecorator.java
-        │   ├── ChildSeatDecorator.java
-        │   └── FullInsuranceDecorator.java
-        │
-        └── facade/
-            └── RentalFacade.java
+    └── com/
+        └── rental/
+            │
+            ├── RentalApp.java
+            │
+            ├── model/
+            │   ├── Vehicle.java
+            │   ├── Car.java
+            │   ├── Bike.java
+            │   ├── ElectricScooter.java
+            │   ├── Customer.java
+            │   └── RentalAgreement.java
+            │
+            ├── factory/
+            │   └── VehicleFactory.java
+            │
+            ├── strategy/
+            │   ├── PricingStrategy.java
+            │   ├── HourlyPricing.java
+            │   ├── DailyPricing.java
+            │   └── WeekendPricing.java
+            │
+            ├── builder/
+            │   └── RentalAgreementBuilder.java
+            │
+            ├── observer/
+            │   ├── AvailabilityObserver.java
+            │   ├── AvailabilitySubject.java
+            │   └── CustomerNotifier.java
+            │
+            ├── decorator/
+            │   ├── RentalService.java
+            │   ├── RentalDecorator.java
+            │   ├── BaseRental.java
+            │   ├── GPSDecorator.java
+            │   ├── ChildSeatDecorator.java
+            │   └── FullInsuranceDecorator.java
+            │
+            └── facade/
+                └── RentalFacade.java
 ```
 
 ---
