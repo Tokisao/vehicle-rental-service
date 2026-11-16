@@ -28,6 +28,7 @@ The domain chosen is deliberately simple — renting a car, bike, or electric sc
 ---
 
 ## Project Structure
+```
 vehicle-rental-service/
 ├── README.md
 ├── docs/
@@ -76,6 +77,7 @@ vehicle-rental-service/
 │
 └── facade/
 └── RentalFacade.java
+```
 
 ---
 
