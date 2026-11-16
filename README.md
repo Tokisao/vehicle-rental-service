@@ -6,11 +6,9 @@
 ---
 
 ## About the Project
-A console-based **Vehicle Rental Service** that demonstrates how **six distinct GoF design patterns** can be integrated into a single, cohesive application. 
-Rather than presenting isolated pattern demos, the system shows the patterns *collaborating*: a rental request flows through the Factory (object creation), 
-the Strategy (pricing), the Builder (agreement assembly), the Decorator (add-on services), the Observer (notifications), and is finally exposed to the client through the Facade.
+This is a console-based Java application built to demonstrate six GoF design patterns working together. Instead of isolated textbook examples, we built a single unified system where a rental request flows through all six patterns. 
 
-The domain chosen is deliberately simple — renting a car, bike, or electric scooter — so that the **architecture** is the focus of the project.
+We chose a vehicle rental service (cars, bikes, scooters) because it’s simple enough that the focus stays on the *architecture* rather than complicated business rules.
 
 ---
 
@@ -28,7 +26,7 @@ The domain chosen is deliberately simple — renting a car, bike, or electric sc
 ---
 
 ## Project Structure
-```text
+```
 vehicle-rental-service/
 ├── README.md
 ├── docs/
@@ -107,20 +105,17 @@ vehicle-rental-service/
 
 ## Individual Contribution of Member
 ### Medina Alish — Factory + Strategy
-- Implemented `VehicleFactory` and the `PricingStrategy` interface with `HourlyPricing`, `DailyPricing`, and `WeekendPricing`.
-- Also authored a standalone **Strategy Calculator** mini-project (add / sub / mul / div) as supporting material for the Strategy pattern.
+- Implemented the Factory (VehicleFactory) and Strategy (PricingStrategy, HourlyPricing, DailyPricing, WeekendPricing). Also built a standalone Strategy Calculator mini-project.
 ### Akmarzhan Nurtas — Builder + Observer
-- Implemented `RentalAgreementBuilder` (fluent setters, `addExtra()`, validating `build()`) and the Observer subsystem (`AvailabilitySubject`, `AvailabilityObserver`, `CustomerNotifier`).
-- Created the integration point where the Builder lazily wraps `BaseRental` with decorators inside `addExtra()`.
+- Built the Builder (RentalAgreementBuilder with fluent setters and validation) and the Observer subsystem. Connected the Builder to the Decorators inside addExtra().
 ### Dayana Zharylgapova — Decorator + Facade
-- Implemented `RentalService`, `RentalDecorator`, `BaseRental`, and the three concrete decorators.
-- Built `RentalFacade` as the single entry point coordinating Factory, Builder, Strategy, and Observer.
-
+- Built the Decorator subsystem (RentalService, BaseRental, and all three concrete decorators) and the RentalFacade.
+  
 ---
 
 ## How to Run
 **Prerequisites:** JDK 17 or newer.   
-### macOS / Linux
+### macOS / Linux:
 ```
 git clone https://github.com/Tokisao/vehicle-rental-service.git
 cd vehicle-rental-service
@@ -159,7 +154,7 @@ Choose an option: 1
 [+] SCOOTER-001  | ElectricScooter | $5.00/hour
 ```
 
-When you create a rental with extras, the console displays the Builder output, the Facade payment step, and the Observer notification:
+When creating a rental with extras, you can see the Facade payment step and the Observer firing:
 ```
 [Facade] Found vehicle: Car (CAR-001)
 [Facade] Agreement created. Total: $125.00
@@ -176,7 +171,7 @@ Pay and rent now? (y/n): y
 ---
 
 ## Testing
-The project includes a self-contained test suite (`TestRunner.java`) that requires no external libraries or build tools — only the JDK. It covers all six design patterns and their integration.
+We included a self-contained test suite (TestRunner.java) that requires no external libraries—just standard Java.
 
 ### Running Tests
 No external dependencies required — just JDK 17+.   
