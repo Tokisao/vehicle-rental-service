@@ -1,0 +1,121 @@
+@startuml Diagram_2_1_Factory_Strategy
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam nodesep 30
+skinparam ranksep 40
+skinparam ArrowSize 1
+skinparam defaultFontSize 11
+skinparam classFontSize 11
+skinparam classAttributeFontSize 10
+skinparam shadowing false
+skinparam linetype ortho
+
+hide empty members
+hide circle
+
+title Section 2.1 — Factory Pattern & Strategy Pattern
+
+' ============================================================
+' PACKAGE: com.rental.model
+' ============================================================
+package "com.rental.model" {
+    interface Vehicle {
+        + getId() : String
+        + getType() : String
+        + getBasePricePerHour() : double
+        + isAvailable() : boolean
+        + setAvailable(available : boolean) : void
+    }
+
+    class Car {
+        - id : String
+        - available : boolean
+        + Car(id : String)
+        + getId() : String
+        + getType() : String
+        + getBasePricePerHour() : double
+        + isAvailable() : boolean
+        + setAvailable(available : boolean) : void
+    }
+
+    class Bike {
+        - id : String
+        - available : boolean
+        + Bike(id : String)
+        + getId() : String
+        + getType() : String
+        + getBasePricePerHour() : double
+        + isAvailable() : boolean
+        + setAvailable(available : boolean) : void
+    }
+
+    class ElectricScooter {
+        - id : String
+        - available : boolean
+        + ElectricScooter(id : String)
+        + getId() : String
+        + getType() : String
+        + getBasePricePerHour() : double
+        + isAvailable() : boolean
+        + setAvailable(available : boolean) : void
+    }
+}
+
+' ============================================================
+' PACKAGE: com.rental.factory
+' ============================================================
+package "com.rental.factory" {
+    class VehicleFactory {
+        + {static} createVehicle(type : String, id : String) : Vehicle
+    }
+}
+
+' ============================================================
+' PACKAGE: com.rental.strategy
+' ============================================================
+package "com.rental.strategy" {
+    interface PricingStrategy {
+        + calculatePrice(vehicle : Vehicle, hours : int) : double
+        + getStrategyName() : String
+    }
+
+    class HourlyPricing {
+        + calculatePrice(vehicle : Vehicle, hours : int) : double
+        + getStrategyName() : String
+    }
+
+    class DailyPricing {
+        + calculatePrice(vehicle : Vehicle, hours : int) : double
+        + getStrategyName() : String
+    }
+
+    class WeekendPricing {
+        + calculatePrice(vehicle : Vehicle, hours : int) : double
+        + getStrategyName() : String
+    }
+}
+
+' ============================================================
+' RELATIONSHIPS
+' ============================================================
+
+' --- Realization ---
+Vehicle <|.. Car
+Vehicle <|.. Bike
+Vehicle <|.. ElectricScooter
+
+PricingStrategy <|.. HourlyPricing
+PricingStrategy <|.. DailyPricing
+PricingStrategy <|.. WeekendPricing
+
+' --- Dependencies ---
+VehicleFactory ..> Vehicle : creates >
+VehicleFactory ..> Car : creates >
+VehicleFactory ..> Bike : creates >
+VehicleFactory ..> ElectricScooter : creates >
+
+HourlyPricing ..> Vehicle : uses >
+DailyPricing ..> Vehicle : uses >
+WeekendPricing ..> Vehicle : uses >
+
+@enduml

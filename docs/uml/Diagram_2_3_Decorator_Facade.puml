@@ -1,0 +1,199 @@
+@startuml Diagram_2_3_Decorator_Facade
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam nodesep 30
+skinparam ranksep 40
+skinparam ArrowSize 1
+skinparam defaultFontSize 11
+skinparam classFontSize 11
+skinparam classAttributeFontSize 10
+skinparam shadowing false
+skinparam linetype ortho
+
+hide empty members
+hide circle
+
+title Section 2.3 — Decorator Pattern & Facade Pattern
+
+' ============================================================
+' PACKAGE: com.rental.model
+' ============================================================
+package "com.rental.model" {
+    class Customer {
+        - name : String
+        + Customer(name : String)
+        + getName() : String
+        + toString() : String
+    }
+
+    class RentalAgreement {
+        - customer : Customer
+        - vehicle : Vehicle
+        - hours : int
+        - extras : String
+        - totalCost : double
+        + RentalAgreement(customer : Customer, vehicle : Vehicle, hours : int, extras : String, totalCost : double)
+        + getCustomer() : Customer
+        + getVehicle() : Vehicle
+        + getHours() : int
+        + getExtras() : String
+        + getTotalCost() : double
+        + toString() : String
+    }
+
+    interface Vehicle {
+        + getId() : String
+        + getType() : String
+        + getBasePricePerHour() : double
+        + isAvailable() : boolean
+        + setAvailable(available : boolean) : void
+    }
+}
+
+' ============================================================
+' PACKAGE: com.rental.decorator
+' ============================================================
+package "com.rental.decorator" {
+    interface RentalService {
+        + getCost() : double
+        + getDescription() : String
+    }
+
+    class BaseRental {
+        - vehicle : Vehicle
+        - hours : int
+        - strategy : PricingStrategy
+        + BaseRental(vehicle : Vehicle, hours : int, strategy : PricingStrategy)
+        + getCost() : double
+        + getDescription() : String
+    }
+
+    abstract class RentalDecorator {
+        # decoratedService : RentalService
+        + RentalDecorator(decoratedService : RentalService)
+        + getCost() : double
+        + getDescription() : String
+    }
+
+    class GPSDecorator {
+        + GPSDecorator(decoratedService : RentalService)
+        + getCost() : double
+        + getDescription() : String
+    }
+
+    class ChildSeatDecorator {
+        + ChildSeatDecorator(decoratedService : RentalService)
+        + getCost() : double
+        + getDescription() : String
+    }
+
+    class FullInsuranceDecorator {
+        + FullInsuranceDecorator(decoratedService : RentalService)
+        + getCost() : double
+        + getDescription() : String
+    }
+}
+
+' ============================================================
+' PACKAGE: com.rental.strategy  (interface only — BaseRental depends on it)
+' ============================================================
+package "com.rental.strategy" {
+    interface PricingStrategy {
+        + calculatePrice(vehicle : Vehicle, hours : int) : double
+        + getStrategyName() : String
+    }
+}
+
+' ============================================================
+' PACKAGE: com.rental.observer
+' ============================================================
+package "com.rental.observer" {
+    interface AvailabilityObserver {
+        + update(vehicle : Vehicle, isAvailable : boolean) : void
+    }
+
+    class AvailabilitySubject {
+        - observers : List<AvailabilityObserver>
+        + attach(observer : AvailabilityObserver) : void
+        + notifyObservers(vehicle : Vehicle, isAvailable : boolean) : void
+    }
+
+    class CustomerNotifier {
+        + update(vehicle : Vehicle, isAvailable : boolean) : void
+    }
+}
+
+' ============================================================
+' PACKAGE: com.rental.builder  (facade depends on it)
+' ============================================================
+package "com.rental.builder" {
+    class RentalAgreementBuilder {
+        + setCustomer(customer : Customer) : RentalAgreementBuilder
+        + setVehicle(vehicle : Vehicle) : RentalAgreementBuilder
+        + setHours(hours : int) : RentalAgreementBuilder
+        + setStrategy(strategy : PricingStrategy) : RentalAgreementBuilder
+        + addExtra(extra : String) : RentalAgreementBuilder
+        + build() : RentalAgreement
+    }
+}
+
+' ============================================================
+' PACKAGE: com.rental.factory  (facade depends on it)
+' ============================================================
+package "com.rental.factory" {
+    class VehicleFactory {
+        + {static} createVehicle(type : String, id : String) : Vehicle
+    }
+}
+
+' ============================================================
+' PACKAGE: com.rental.facade
+' ============================================================
+package "com.rental.facade" {
+    class RentalFacade {
+        - availabilitySubject : AvailabilitySubject
+        + RentalFacade()
+        + findVehicle(type : String, id : String) : Vehicle
+        + createAgreement(customer : Customer, vehicle : Vehicle, hours : int, pricingType : String, extras : String[]) : RentalAgreement
+        + payAndRent(agreement : RentalAgreement) : void
+        + returnVehicle(agreement : RentalAgreement) : void
+    }
+}
+
+' ============================================================
+' RELATIONSHIPS
+' ============================================================
+
+' --- Realization (Decorator hierarchy) ---
+RentalService <|.. BaseRental
+RentalService <|.. RentalDecorator
+RentalDecorator <|-- GPSDecorator
+RentalDecorator <|-- ChildSeatDecorator
+RentalDecorator <|-- FullInsuranceDecorator
+
+AvailabilityObserver <|.. CustomerNotifier
+
+' --- Aggregation (with multiplicity) ---
+RentalDecorator "1" o-- "1" RentalService : decorates >
+
+AvailabilitySubject "1" o-- "*" AvailabilityObserver : notifies >
+
+' --- Composition (RentalAgreement owns its Customer and Vehicle) ---
+RentalAgreement "1" *-- "1" Customer : has >
+RentalAgreement "1" *-- "1" Vehicle : has >
+
+' --- Dependencies (Decorator internals) ---
+BaseRental ..> Vehicle : uses >
+BaseRental ..> PricingStrategy : uses >
+
+' --- Dependencies (Facade coordinating the whole subsystem) ---
+RentalFacade ..> VehicleFactory : uses >
+RentalFacade ..> RentalAgreementBuilder : uses >
+RentalFacade ..> PricingStrategy : uses >
+RentalFacade ..> AvailabilitySubject : uses >
+RentalFacade ..> CustomerNotifier : creates >
+RentalFacade ..> RentalAgreement : returns >
+RentalFacade ..> Vehicle : uses >
+RentalFacade ..> Customer : uses >
+
+@enduml
